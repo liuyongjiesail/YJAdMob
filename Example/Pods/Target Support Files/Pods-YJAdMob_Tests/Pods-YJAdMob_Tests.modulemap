@@ -1,0 +1,6 @@
+framework module Pods_YJAdMob_Tests {
+  umbrella header "Pods-YJAdMob_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

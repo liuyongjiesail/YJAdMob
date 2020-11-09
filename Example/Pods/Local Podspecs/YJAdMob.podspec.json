@@ -1,0 +1,22 @@
+{
+  "name": "YJAdMob",
+  "version": "0.1.0",
+  "summary": "A short description of YJAdMob.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/liuyongjie/YJAdMob",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "liuyongjie": "liuyongjiesail@icloud.com"
+  },
+  "source": {
+    "git": "https://github.com/liuyongjie/YJAdMob.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "YJAdMob/Classes/**/*"
+}

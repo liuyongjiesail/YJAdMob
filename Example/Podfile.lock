@@ -1,0 +1,16 @@
+PODS:
+  - YJAdMob (0.1.0)
+
+DEPENDENCIES:
+  - YJAdMob (from `../`)
+
+EXTERNAL SOURCES:
+  YJAdMob:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  YJAdMob: 71e6d97156ac57a56e99c250dff3f1f7113f912c
+
+PODFILE CHECKSUM: 899a765db900b2dfd2a3d090a0f0ad4a88439fbe
+
+COCOAPODS: 1.8.4

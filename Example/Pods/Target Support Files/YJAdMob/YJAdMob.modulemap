@@ -1,0 +1,6 @@
+framework module YJAdMob {
+  umbrella header "YJAdMob-umbrella.h"
+
+  export *
+  module * { export * }
+}
