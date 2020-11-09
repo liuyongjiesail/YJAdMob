@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'YJAdMob_Example' do
+  pod 'YJAdMob', :path => '../'
+
+  target 'YJAdMob_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
