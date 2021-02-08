@@ -7,6 +7,7 @@
 //
 
 #import "YJViewController.h"
+#import <YJAdMob/YJAdMob.h>
 
 @interface YJViewController ()
 
@@ -18,6 +19,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    [YJRewardVideoAd.sharedInstance showFromViewController:self];
 }
 
 - (void)didReceiveMemoryWarning

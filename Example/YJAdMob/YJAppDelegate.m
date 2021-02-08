@@ -7,12 +7,15 @@
 //
 
 #import "YJAppDelegate.h"
+#import <YJAdMob/YJAdMob.h>
 
 @implementation YJAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [YJAdMob launchAdService];
+    
     return YES;
 }
 

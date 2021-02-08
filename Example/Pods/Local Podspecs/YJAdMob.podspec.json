@@ -18,5 +18,15 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "YJAdMob/Classes/**/*"
+  "static_framework": true,
+  "xcconfig": {
+    "OTHER_LDFLAGS": "-ObjC",
+    "ENABLE_BITCODE": "NO"
+  },
+  "source_files": "YJAdMob/Classes/**/*",
+  "dependencies": {
+    "Google-Mobile-Ads-SDK": [
+
+    ]
+  }
 }

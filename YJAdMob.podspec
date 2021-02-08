@@ -29,8 +29,11 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
+  s.static_framework = true
+  s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC", "ENABLE_BITCODE" => "NO"}
 
   s.source_files = 'YJAdMob/Classes/**/*'
+  s.dependency 'Google-Mobile-Ads-SDK'
   
   # s.resource_bundles = {
   #   'YJAdMob' => ['YJAdMob/Assets/*.png']

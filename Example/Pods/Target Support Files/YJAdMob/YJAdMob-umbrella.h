@@ -10,6 +10,8 @@
 #endif
 #endif
 
+#import "YJAdMob.h"
+#import "YJRewardVideoAd.h"
 
 FOUNDATION_EXPORT double YJAdMobVersionNumber;
 FOUNDATION_EXPORT const unsigned char YJAdMobVersionString[];
