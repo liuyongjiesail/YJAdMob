@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showFromViewController:(UIViewController *)viewController;
 
+- (void)showFromViewController:(UIViewController *)viewController complete:(void(^ __nullable)(void))complete;
+
 @end
 
 NS_ASSUME_NONNULL_END

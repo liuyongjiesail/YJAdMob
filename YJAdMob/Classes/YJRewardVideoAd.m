@@ -10,9 +10,11 @@
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 #import <AdSupport/AdSupport.h>
 
-@interface YJRewardVideoAd () <GADRewardedAdDelegate>
+@interface YJRewardVideoAd () <GADFullScreenContentDelegate>
 
 @property(nonatomic, strong) GADRewardedAd *rewardedAd;
+@property(nonatomic, assign) BOOL isRewarded;
+@property (copy, nonatomic) void(^tempComplete)(void);
 
 @end
 
@@ -23,7 +25,10 @@
     static YJRewardVideoAd *instance;
     dispatch_once(&onceToken, ^{
         instance = [YJRewardVideoAd new];
+#ifdef DEBUG
         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[@"860d59e8b20518f9dd1c793249d743b9"];
+#else
+#endif
         if (@available(iOS 14, *)) {
             [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
                 [instance preload];
@@ -36,56 +41,56 @@
 }
 
 - (void)preload {
-    self.rewardedAd = [self createAndLoadRewardedAd];
+    [GADRewardedAd loadWithAdUnitID:NSBundle.mainBundle.infoDictionary[@"GADRewardVideoAdUnitID"] request:[GADRequest request] completionHandler:^(GADRewardedAd * _Nullable rewardedAd, NSError * _Nullable error) {
+        self.rewardedAd = rewardedAd;
+        self.rewardedAd.fullScreenContentDelegate = self;
+    }];
 }
 
 - (void)showFromViewController:(UIViewController *)viewController {
-    if (self.rewardedAd.isReady) {
-        [self.rewardedAd presentFromRootViewController:viewController delegate:self];
+    [self showFromViewController:viewController complete:nil];
+}
+
+- (void)showFromViewController:(UIViewController *)viewController complete:(void(^ __nullable)(void))complete {
+    self.tempComplete = complete;
+    if ([self.rewardedAd canPresentFromRootViewController:viewController error:nil]) {
+        [self.rewardedAd presentFromRootViewController:viewController userDidEarnRewardHandler:^{
+            self.isRewarded = YES;
+        }];
     } else {
         [self preload];
+        if (complete) {
+            complete();
+        }
     }
 }
 
-#pragma mark - GADRewardedAdDelegate
+#pragma mark - GADFullScreenContentDelegate
 
 /// Tells the delegate that the user earned a reward.
-- (void)rewardedAd:(GADRewardedAd *)rewardedAd userDidEarnReward:(GADAdReward *)reward {
+- (void)adDidRecordImpression:(nonnull id<GADFullScreenPresentingAd>)ad {
     // TODO: Reward the user.
-    NSLog(@"rewardedAd:userDidEarnReward:");
+    NSLog(@"adDidRecordImpression:");
 }
 
 /// Tells the delegate that the rewarded ad was presented.
-- (void)rewardedAdDidPresent:(GADRewardedAd *)rewardedAd {
-    NSLog(@"rewardedAdDidPresent:");
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+    NSLog(@"ad:didFailToPresentFullScreenContentWithError:");
 }
 
 /// Tells the delegate that the rewarded ad failed to present.
-- (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {
-    NSLog(@"rewardedAd:didFailToPresentWithError");
+- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    NSLog(@"adDidPresentFullScreenContent");
 }
 
 /// Tells the delegate that the rewarded ad was dismissed.
-- (void)rewardedAdDidDismiss:(GADRewardedAd *)rewardedAd {
-    NSLog(@"rewardedAdDidDismiss:");
-    self.rewardedAd = [self createAndLoadRewardedAd];
-}
-
-#pragma mark - Private
-
-- (GADRewardedAd *)createAndLoadRewardedAd {
-    
-    GADRewardedAd *rewardedAd = [[GADRewardedAd alloc]
-      initWithAdUnitID:@"ca-app-pub-3940256099942544/1712485313"];
-    GADRequest *request = [GADRequest request];
-    [rewardedAd loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
-        if (error) {
-          // Handle ad failed to load case.
-        } else {
-          // Ad successfully loaded.
-        }
-    }];
-    return rewardedAd;
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+    NSLog(@"adDidDismissFullScreenContent:");
+    if (self.tempComplete && self.isRewarded) {
+        self.tempComplete();
+    }
+    [self preload];
+    self.isRewarded = NO;
 }
 
 @end

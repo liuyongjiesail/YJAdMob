@@ -23,11 +23,12 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
-    [YJRewardVideoAd.sharedInstance showFromViewController:self];
+    [YJRewardVideoAd.sharedInstance showFromViewController:self complete:^{
+        NSLog(@"播放结束");
+    }];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
